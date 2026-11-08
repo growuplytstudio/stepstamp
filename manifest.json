@@ -1,0 +1,14 @@
+{
+  "name": "Stepstamp",
+  "short_name": "Stepstamp",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "theme_color": "#218653",
+  "background_color": "#18231E",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"}
+  ]
+}

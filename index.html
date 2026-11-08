@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#218653"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<title>Stepstamp</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--p:#218653;--pt:#218653;--ac:#F4A340;--tint:#DCEBE1;--bg:#F7F8F3;--card:#fff;--tx:#26332C;--mu:#5f6e65;--ok:#239B62;--bd:#dfe6dc;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 16px/1.45 "Nunito Sans",system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+#app{max-width:480px;margin:0 auto;padding:18px 16px 96px}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.01em}
+h1{font-size:26px}h2{font-size:20px}h3{font-size:17px}
+.mu{color:var(--mu);font-size:14px}.row{display:flex;align-items:center;gap:12px}.sp{justify-content:space-between}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:16px;margin:12px 0}
+.btn{min-height:48px;padding:0 18px;border:0;border-radius:14px;background:var(--p);color:#fff;font:800 16px "Nunito Sans",system-ui,sans-serif;cursor:pointer;width:100%}
+.btn.sec{background:var(--tint);color:var(--tx)}.btn.out{background:none;border:2px solid var(--bd);color:var(--tx)}.btn.sm{width:auto;min-height:48px}
+.btn:disabled{opacity:.45}.btn.ac{background:var(--ac);color:#26332C}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.big{font-size:40px;font-weight:800;line-height:1}.big small{font-size:18px;color:var(--mu);font-weight:700}
+.strip{display:grid;grid-template-columns:repeat(30,1fr);gap:2px;margin:12px 0}
+.strip i{aspect-ratio:1;border-radius:3px;background:var(--tint)}.strip i.d{background:var(--p)}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:14px 0}
+.cell{aspect-ratio:1;border-radius:12px;border:2px solid transparent;display:grid;place-items:center;font:800 15px "Nunito Sans",sans-serif;background:var(--tint);color:var(--mu);padding:0}
+.cell.done{background:var(--p);color:#fff}.cell.miss{background:none;border:2px dashed var(--mu);color:var(--mu)}.cell.now{border-color:var(--ac);color:var(--tx)}.cell.fut{opacity:.7}
+.leg{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--mu)}
+.nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px);display:flex;justify-content:center}
+.nav div{display:flex;max-width:480px;width:100%}
+.nav button{flex:1;min-height:56px;background:none;border:0;color:var(--mu);font:700 13px "Nunito Sans",sans-serif;cursor:pointer}
+.nav button.on{color:var(--pt)}
+.bar{height:10px;background:var(--tint);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--p)}
+.ov{position:fixed;inset:0;background:rgba(10,20,15,.55);display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.sheet{background:var(--bg);width:100%;max-width:480px;max-height:90%;overflow:auto;border-radius:22px 22px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px))}
+input,textarea{width:100%;min-height:48px;border:2px solid var(--bd);border-radius:12px;background:var(--card);color:var(--tx);font:16px "Nunito Sans",sans-serif;padding:10px;margin:8px 0}
+textarea{min-height:150px;font:12px monospace}
+.seg{display:flex;gap:8px}.seg .btn{flex:1}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;background:var(--tint);font-size:12px;font-weight:700}
+.lock{opacity:.6}
+.btn{background-image:linear-gradient(180deg,rgba(255,255,255,.2),transparent);box-shadow:0 4px 0 rgba(0,0,0,.22);transition:transform .08s}.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.22)}
+.card{box-shadow:0 4px 0 rgba(0,0,0,.06),0 10px 22px rgba(0,0,0,.07)}
+.hc{background:var(--hc);color:var(--ht);border-radius:22px;padding:16px;margin:16px 0;box-shadow:0 7px 0 rgba(0,0,0,.2),0 14px 26px rgba(0,0,0,.14);background-image:linear-gradient(160deg,rgba(255,255,255,.2),transparent 55%)}
+.hc h3{font-size:19px}.hc .sb{opacity:.9;font-size:14px}.hc .nm{font-size:17px}.ic{font-size:30px;width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.25);display:grid;place-items:center;flex:none}
+.hm{display:grid;grid-template-columns:repeat(15,1fr);gap:4px;margin:14px 0}.hm i{aspect-ratio:1;border-radius:5px;background:color-mix(in srgb,var(--ht) 25%,transparent)}.hm i.d{background:var(--ht);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.chk{width:62px;height:62px;flex:none;border-radius:50%;border:4px solid var(--ht);background:transparent;color:var(--ht);font:800 30px sans-serif;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.22)}.chk.on{background:var(--ht);color:var(--hc)}.chk:active{transform:translateY(4px);box-shadow:none}
+.hcd{background:var(--hc);color:var(--ht);border:0;box-shadow:0 7px 0 rgba(0,0,0,.2),0 14px 26px rgba(0,0,0,.14)}.hcd .mu,.hcd small{color:inherit;opacity:.9}.hcd .bar{background:color-mix(in srgb,var(--ht) 25%,transparent)}.hcd .bar i{background:var(--ht)}
+.cell.done{background:var(--p);color:var(--dt,#fff);box-shadow:0 3px 0 rgba(0,0,0,.2)}
+@keyframes pop{50%{transform:scale(1.08)}}.pop{animation:pop .3s}
+@media(prefers-reduced-motion:reduce){.pop{animation:none}}
+img.sc{width:100%;border-radius:14px;border:1px solid var(--bd)}
+#app:has(.dk){max-width:1240px}
+.dk .top{display:grid;grid-template-columns:230px 1fr 210px;gap:14px}.dk .top .card{margin:0}
+.dscroll{overflow-x:auto}.dt{min-width:1080px}
+.dr{display:grid;grid-template-columns:170px repeat(35,minmax(22px,1fr)) 46px 46px 58px;gap:3px;align-items:center;margin:3px 0}
+.spine{writing-mode:vertical-rl;transform:rotate(180deg);background:#8f7f96;color:#fff;font:800 20px "Nunito Sans",sans-serif;letter-spacing:.25em;text-align:center;padding:10px 6px;border-radius:8px;flex:none}
+.dq{text-align:center;font-weight:800;font-size:12px;padding:5px 0;border-radius:5px;color:#26332C;background:var(--tint)}
+.dl{font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wh{text-align:center;font-weight:800;font-size:12px;padding:4px;border-radius:6px;color:#26332C}
+.dn{text-align:center;font-size:10px;line-height:1.15;padding:2px 0;border-radius:4px;color:#26332C}
+.dc{width:100%;max-width:24px;aspect-ratio:1;border-radius:6px;border:2px solid var(--bd);background:var(--card);justify-self:center;padding:0;color:#fff;font:800 12px sans-serif;display:grid;place-items:center;cursor:pointer}
+.dc.on{background:var(--p);border-color:var(--p)}.dc.off{opacity:.35;cursor:default;background:var(--tint)}.dc.td{outline:2px solid var(--ac)}
+.dp{display:flex;align-items:center;gap:6px;font-size:12px}.dp .bar{flex:1;height:8px}
+.dkw{display:grid;grid-template-columns:repeat(5,1fr) 1.3fr;gap:12px}.dkw .card{margin:0}
+.dr{grid-template-columns:var(--nc,170px) repeat(var(--n,35),minmax(var(--cm,22px),1fr)) var(--rc,46px 46px 58px)}
+.dl{cursor:default}.dc{border:1.5px solid var(--mu);border-radius:5px}.dc.on{background:var(--tx);border-color:var(--tx);color:var(--card)}.dc.off{border-color:var(--bd)}
+.dw,.dn{text-align:center;font-weight:800;font-size:11px;padding:3px 0;border-radius:4px;color:#26332C;line-height:1.2}.dn{font-weight:700}.em{text-align:center;font-size:15px}.tt .dn{background:var(--tint);color:var(--tx)}
+.mc{background:#FBD9C9;color:#26332C;border:0}.mc .mn{font:800 38px/1 "Nunito Sans",sans-serif;letter-spacing:-.02em}.mc .my{font:700 20px "Nunito Sans",sans-serif;opacity:.7;margin-bottom:14px}
+.mc .ms{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.mc .ms div{background:rgba(255,255,255,.55);border-radius:12px;padding:6px 2px;text-align:center}.mc b{display:block;font-size:22px;line-height:1.1}.mc span{font-size:11px;font-weight:700}
+.ls{display:flex;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;height:calc(100dvh - 52px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}.ls::-webkit-scrollbar{display:none}
+.lp{flex:0 0 100%;min-width:0;scroll-snap-align:start;overflow-y:auto}.cw{position:relative;flex:1;min-height:0;margin:8px 0 0 38px}.cw svg{display:block}.cw .ya{position:absolute;left:-38px;font-size:11px;color:var(--mu);transform:translateY(-50%)}
+.pd{display:flex;justify-content:center;height:30px}.pd button{width:44px;height:30px;border:0;background:none;display:grid;place-items:center;cursor:pointer}.pd i{width:9px;height:9px;border-radius:5px;background:var(--mu);opacity:.5}.pd .on i{background:var(--p);opacity:1;width:24px}
+.lsm .nav{top:0;right:auto;width:calc(76px + env(safe-area-inset-left,0px));padding-left:env(safe-area-inset-left,0px);border-top:0;border-right:1px solid var(--bd)}.lsm .nav div{flex-direction:column;justify-content:center;max-width:none}.lsm .nav button{flex:none;min-height:56px;font-size:12px}
+.lsm #app,.lsm #app:has(.dk){max-width:none;margin:0;padding:8px 12px 8px calc(88px + env(safe-area-inset-left,0px))}
+.lsm .ls .dr{--nc:92px;--cm:0px;--rc:28px 28px 40px;gap:2px;margin:2px 0}.lsm .ls .dt{min-width:0}.lsm .dscroll{overflow:visible}.lsm .card{padding:8px}
+.lsm .dl{font-size:11px}.lsm .dq,.lsm .wh{font-size:10px}.lsm .dn,.lsm .dw{font-size:9px;padding:2px 0}.lsm .em{font-size:11px}.lsm .dc{max-width:none;aspect-ratio:auto;height:26px;border-radius:4px}.lsm .spine{font-size:12px;letter-spacing:.12em;padding:6px 3px}
+.dt .dr{gap:2px;margin:0;padding:2px 0;border-bottom:1px solid var(--bd);align-items:center}
+.dt .dl{background:var(--tint);padding:4px 6px;border-radius:3px;font-size:12px}
+.dt .dc{width:100%;max-width:20px;border:1.5px solid #8a9a90;border-radius:3px;background:#fff;color:#fff}.dt .dc.on{background:#111;border-color:#111;color:#fff}.dt .dc.off{background:var(--tint);border-color:var(--bd)}
+.dt .dw,.dt .dn{background:none;color:var(--tx);padding:2px 0}.dt .dw{font-weight:800}.dt .dn{font-size:10px}
+.dt .hd2{border-bottom:2px solid var(--bd)}
+.vh{writing-mode:vertical-rl;transform:rotate(180deg);font:800 10px "Nunito Sans",sans-serif;letter-spacing:.08em;text-align:center;color:var(--tx);padding:2px 0;justify-self:center}
+.dt .dq{background:var(--card);border:1px solid var(--bd);border-radius:2px;font-size:12px}
+.spine{background:#8f7f96;font:400 34px "Nunito Sans",sans-serif;letter-spacing:.3em;color:#fff;border-radius:3px;padding:10px 8px}
+.lsm .spine{font-size:12px;letter-spacing:.12em;padding:6px 3px}
+.gr{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}.gr .card{margin:0}
+.dkx{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}.dkx .card{margin:0}
+.wd .nav{top:0;right:auto;width:190px;border-top:0;border-right:1px solid var(--bd);justify-content:flex-start;padding-top:24px}.wd .nav div{flex-direction:column;max-width:none;padding:0 10px;gap:4px}
+.wd .nav button{flex:none;text-align:left;padding:0 16px;font-size:16px;border-radius:12px;min-height:48px}.wd .nav button.on{background:var(--tint)}
+.wd #app,.wd #app:has(.dk){max-width:1500px;margin:0 0 0 190px;padding:24px 32px 40px}
+.wd .ov{align-items:center}.wd .sheet{border-radius:22px;max-width:520px}
+.mas{columns:2 340px;column-gap:14px;max-width:1000px}.mas .card{break-inside:avoid;margin:0 0 14px}
+.ls{scroll-behavior:smooth}.lp{will-change:transform,opacity;transform-origin:center}
+.lp:nth-child(n+2){opacity:.3;transform:scale(.94)}
+.pd i{transition:width .25s ease,opacity .25s ease,background .25s ease}
+@media(prefers-reduced-motion:reduce){.ls{scroll-behavior:auto}.lp:nth-child(n){opacity:1;transform:none}.pd i{transition:none}}
+.dt .dl{display:flex;align-items:center;gap:6px;background:var(--tint);border-left:5px solid var(--hc,var(--p));border-radius:8px;padding:3px 8px 3px 6px;font-weight:800;font-size:13px;min-height:30px;overflow:hidden}.dl span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ib{font-style:normal;font-size:16px;flex:none}
+.dt .dc{width:100%;max-width:21px;height:21px;aspect-ratio:auto}.dt .dc.on{background:var(--hc);border-color:var(--hc);color:var(--ht)}.dt .dc:disabled{cursor:default}.dt .dc:disabled:not(.on){background:#f1f4ef}.dt .dc.td{border:2px solid var(--ac);background:#fff;outline:0;box-shadow:0 0 0 2px rgba(244,163,64,.35)}.dt .dc.on.td{background:var(--hc)}.dt .dc.off.td{background:var(--tint)}
+.dt .dq{background:var(--tint);border:0;border-radius:8px;font-weight:800;font-size:13px;padding:6px 0;color:var(--tx)}
+.dt .tdh{background:var(--ac);color:#26332C;border-radius:6px}
+.dkb{display:grid;grid-template-columns:1.1fr 1.4fr 1fr 1.2fr;gap:12px}.dkb .card{margin:0;padding:12px}.ph .strip{margin:4px 0 0}
+.gl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.gl div{background:var(--tint);border-radius:12px;padding:8px 2px;text-align:center}.gl b{display:block;font-size:20px;line-height:1.2}.gl span{font-size:11px;color:var(--mu)}
+.wd #app,.wd #app:has(.dk){padding:14px 24px 16px}.lsm .dt .dl{font-size:10px;min-height:26px;padding:2px 4px;border-left-width:3px}.lsm .ib{font-size:12px}.lsm .dt .dc{max-width:none;height:26px}.lsm .dt .dq{font-size:11px;padding:4px 0}
+.cell:disabled{cursor:default}
+.mas{columns:3 260px;max-width:1100px}.mas .card{padding:10px 14px;margin:0 0 10px}.mas h3{font-size:15px}.mas .mu{font-size:13px;margin:4px 0 8px}.mas .btn{min-height:40px;font-size:14px}.mas .seg .btn{min-height:40px}
+</style></head><body><div id="app"></div>
+<script>
+const K='stepstamp.v1';
+const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0'),ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()),today=()=>ymd(new Date());
+const add=(s,n)=>{const[y,m,d]=s.split('-').map(Number);return ymd(new Date(y,m-1,d+n))};
+const fmt=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})};
+const DRE=/^\d{4}-\d{2}-\d{2}$/;
+const CH=[['Early rising','🌅','Wake up at your target time.',1],['Daily water','💧','Drink enough water every day.',1],['Reading','📖','Read a little every day.',1],['Workout','💪','Move your body daily.',1],['No phone before bed','📵','Screens off before sleep.',0],['Journaling','📝','Write a few lines each day.',0],['Daily study','🎓','Study at a steady pace.',0]];
+let S=load(),view='today',sel=null,M=null,pop=null,PEND=null,CV=null,FM=1920;
+function load(){try{const r=JSON.parse(localStorage.getItem(K));if(r&&Array.isArray(r.attempts))return r}catch(e){}return{v:1,theme:'system',premium:false,onboarded:false,attempts:[]}}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+const att=id=>S.attempts.find(a=>a.id===id),uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36);
+const isP=(a,d,t)=>a.pauses.some(p=>p.f<=d&&(p.t===null?d<=t:d<p.t));
+function slots(a){const t=today(),o=[];let d=a.start,g=0;while(o.length<30&&g++<500){if(!isP(a,d,t))o.push({d,st:a.days[d]?'done':d<t?'miss':d===t?'now':'fut'});d=add(d,1)}return o}
+function stats(a){const t=today(),s=slots(a),done=s.filter(x=>x.st==='done').length;let st=0,i=s.length-1;while(i>=0&&s[i].d>t)i--;if(i>=0&&s[i].d===t&&s[i].st!=='done')i--;for(;i>=0&&s[i].st==='done';i--)st++;const over=s[29].d<t,complete=done===30;return{s,done,streak:st,over,complete,paused:a.pauses.some(p=>p.t===null&&p.f<=t),live:!a.archived&&!over&&!complete}}
+const LOGO=(z=48)=>`<svg width="${z}" height="${z}" viewBox="0 0 96 96" role="img" aria-label="Stepstamp logo"><g fill="var(--tint)"><rect width="28" height="28" rx="8"/><rect x="34" width="28" height="28" rx="8"/><rect y="34" width="28" height="28" rx="8"/><rect x="34" y="34" width="28" height="28" rx="8"/></g><g fill="#218653"><rect x="68" y="34" width="28" height="28" rx="8"/><rect y="68" width="28" height="28" rx="8"/><rect x="34" y="68" width="28" height="28" rx="8"/><rect x="68" y="68" width="28" height="28" rx="8"/></g><rect x="73" y="5" width="18" height="18" rx="5" fill="#F4A340"/></svg>`;
+const MS={7:['One week of showing up.','Small steps. Real progress.'],21:['Three weeks stronger.','Look how far you’ve come.'],30:['I did it! 30 days.','One commitment. A real achievement.']};
+const ms=n=>n>=30?30:n>=21?21:n>=7?7:0;
+const strip=a=>`<div class="strip" aria-hidden="true">${slots(a).map(x=>`<i class="${x.st==='done'?'d':''}"></i>`).join('')}</div>`;
+
+function vToday(){const L=S.attempts.filter(a=>stats(a).live);
+return `<div class="row sp"><div class="row">${LOGO(40)}<h1>Stepstamp</h1></div>${S.premium?'<span class="pill">Premium preview</span>':''}</div><p class="mu">${new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}</p>`+
+(L.length?L.map(a=>{const s=stats(a),t=today(),td=s.s.find(x=>x.d===t),y=s.s.find(x=>x.d===add(t,-1)),isDone=td&&td.st==='done';
+return `<div class="card"><div class="row sp" onclick="A.open('${a.id}')" style="cursor:pointer"><div class="row"><span style="font-size:28px">${a.icon}</span><div><h3>${E(a.name)}</h3><span class="mu">${s.streak}-day streak</span></div></div><div class="big">${s.done}<small> of 30 days completed</small></div></div>${strip(a)}
+${y&&y.st==='miss'&&!isDone?'<p class="mu">Yesterday was missed. Your progress is still here.</p>':''}
+${s.paused?`<p class="mu">Take a pause. Your history stays safe.</p><button class="btn sec" onclick="A.rs('${a.id}')">Resume</button>`:td?`<button class="btn ${isDone?'sec':''} ${pop===a.id?'pop':''}" onclick="A.tg('${a.id}','${t}')">${isDone?'✓ Done today · Tap to undo':'Today counts. Mark your step.'}</button>${isDone?'<p class="mu" style="margin:8px 0 0">Nice work. You showed up today.</p>':''}`:`<button class="btn sec" onclick="A.open('${a.id}')">Open</button>`}</div>`}).join(''):`<div class="card" style="text-align:center"><h2>Start your first step</h2><p class="mu">Pick a 30-day challenge or make your own habit.</p><button class="btn" onclick="A.go('ch')">Choose a challenge</button></div>`)}
+function vCh(){const lim=S.attempts.filter(a=>stats(a).live).length;
+return `<h1>Challenges</h1><p class="mu">${S.premium?'Unlimited active challenges.':`${lim} of 3 free active slots used.`} Each challenge counts as one habit.</p>
+<div class="gr">${CH.map((c,i)=>{const lk=!c[3]&&!S.premium;return `<div class="card row sp ${lk?'lock':''}"><div class="row"><span style="font-size:28px">${c[1]}</span><div><h3>${c[0]}</h3><span class="mu">${c[2]}</span></div></div>${lk?'<span class="pill">Premium</span>':`<button class="btn sm" onclick="A.ost(${i})">Start</button>`}</div>`}).join('')}
+<div class="card"><h3>Your own habit</h3><p class="mu">Create a custom 30-day habit.</p><button class="btn sec" onclick="A.ost(-1)">Create custom habit</button></div></div>`}
+function vHist(){const L=[...S.attempts].reverse();return `<h1>History</h1><p class="mu">Every attempt is kept. Nothing is rewritten.</p>`+(L.length?'<div class="gr">'+L.map(a=>{const s=stats(a);const lb=a.archived?(a.note||'Archived'):s.complete?'Completed':s.over?'Window ended':s.paused?'Paused':'Active';return `<div class="card" onclick="A.open('${a.id}')" style="cursor:pointer"><div class="row sp"><div class="row"><span style="font-size:24px">${a.icon}</span><div><h3>${E(a.name)}</h3><span class="mu">Started ${fmt(a.start)}</span></div></div><div style="text-align:right"><b>${s.done}/30</b><br><span class="pill">${lb}</span></div></div></div>`}).join('')+'</div>':'<div class="card"><p class="mu">No attempts yet.</p></div>')}
+function vSet(){const T=(k,l)=>`<button class="btn ${S.theme===k?'':'sec'}" onclick="A.th('${k}')">${l}</button>`;
+return `<h1 style="margin-bottom:12px">Settings</h1><div class="mas"><div class="card"><h3>Backup</h3><p class="mu">Your data stays only on this device. Export = save a copy of everything (copy text or download file). Import = bring that copy back on a new phone.</p><div class="seg"><button class="btn sec" onclick="A.ex()">Export</button><button class="btn sec" onclick="A.im()">Import</button></div></div>
+<div class="card"><h3>Premium preview</h3><p class="mu">Free: 3 active challenges. Premium: unlimited habits and all packs. Payments are not live yet, so this only previews Premium.</p><button class="btn ${S.premium?'':'sec'}" onclick="A.prem()">${S.premium?'Premium preview on · Manage':'See Premium plans'}</button></div>
+${S.attempts.some(a=>a.demo)?'<div class="card"><h3>Sample data</h3><p class="mu">Sample challenges are still on this device.</p><button class="btn out" onclick="A.undemo()">Remove sample data</button></div>':''}<div class="card"><h3>Landscape mode</h3><p class="mu">Use the app sideways, like a game. Works best on Android.</p><button class="btn sec" onclick="A.rot()">Go landscape</button></div><div class="card"><h3>About</h3><p class="mu">Stepstamp. One day. One step. Your progress. No ads, no login, no tracking.</p><button class="btn out" onclick="A.rst()">Delete all data</button></div></div>`}
+function vDet0(){const a=att(sel);if(!a){sel=null;return vToday()}const s=stats(a),t=today(),m=ms(s.done),td=s.s.find(x=>x.d===t),isDone=td&&td.st==='done';
+const lb={done:'Completed',miss:'Missed',now:'Today',fut:'Upcoming'};
+return `<button class="btn out sm" onclick="A.back()">← Back</button>
+<div class="row" style="margin:14px 0"><span style="font-size:34px">${a.icon}</span><div><h1>${E(a.name)}</h1><span class="mu">Started ${fmt(a.start)}${a.archived?' · '+(a.note||'Archived'):''}</span></div></div>
+<div class="card"><div class="big">${s.done}<small> of 30 days completed</small></div><div class="bar" style="margin:12px 0"><i style="width:${s.done/30*100}%"></i></div><span class="mu">Current streak: <b>${s.streak}</b> ${s.streak===1?'day':'days'}</span>${s.complete?'<p><b>You did it. Look how far you’ve come.</b></p>':s.over?'<p class="mu">This 30-day window has ended. You can repeat it.</p>':''}</div>
+<div class="card"><div class="grid">${s.s.map((x,i)=>`<button class="cell ${x.st}" ${x.d!==t?'disabled':''} aria-label="Day ${i+1}, ${lb[x.st]}, ${fmt(x.d)}" onclick="A.tg('${a.id}','${x.d}')">${x.st==='done'?'✓':x.st==='miss'?'×':i+1}</button>`).join('')}</div>
+<div class="leg"><span>✓ Completed</span><span>× Missed</span><span>Ringed = today</span><span>Faded = upcoming</span></div><p class="mu" style="margin-bottom:0">Only today can be changed. Other days are locked.</p></div>
+${s.paused?`<p class="mu">Take a pause. Your history stays safe.</p><button class="btn" onclick="A.rs('${a.id}')">Resume</button>`:(!a.archived&&td)?`<button class="btn ${isDone?'sec':''}" onclick="A.tg('${a.id}','${t}')">${isDone?'✓ Done today · Tap to undo':'Today counts. Mark your step.'}</button>`:''}
+<div class="seg" style="margin-top:10px"><button class="btn sec" ${m?'':'disabled'} onclick="A.sh('${a.id}')">Share card</button>${s.live&&!s.paused?`<button class="btn sec" onclick="A.ps('${a.id}')">Pause</button>`:''}</div>
+${m?'':'<p class="mu">Reach 7 completed days to unlock your share card.</p>'}
+<div class="seg" style="margin-top:10px">${s.live?`<button class="btn out" onclick="A.rsa('${a.id}')">Restart</button>`:''}${(s.over||s.complete||a.archived)?`<button class="btn out" onclick="A.rep('${a.id}')">Repeat</button>`:''}${!a.archived?`<button class="btn out" onclick="A.ar('${a.id}')">Archive</button>`:''}</div>
+<p class="mu">Restart begins a new attempt. The old one stays in History.</p>`}
+function onb(){return `<div style="text-align:center;padding-top:40px">${LOGO(110)}<h1 style="font-size:36px;margin-top:20px">Stepstamp</h1><p style="color:var(--pt);font-weight:800;font-size:18px">One day. One step. Your progress.</p></div>
+<div class="card"><p><b>Pick a challenge</b><br><span class="mu">Ready-made 30-day plans, or your own habit.</span></p><p><b>One tap a day</b><br><span class="mu">See “X of 30 days completed” at a glance.</span></p><p style="margin-bottom:0"><b>No pressure</b><br><span class="mu">A missed day never erases your progress. No ads, no login. Your data stays on this device.</span></p></div><button class="btn" onclick="A.begin()">Get started</button>`}
+const sheet=h=>`<div class="ov" onclick="if(event.target===this)A.close()"><div class="sheet" role="dialog" aria-modal="true">${h}</div></div>`;
+function render(){const r=document.documentElement;r.classList.toggle('lsm',land());r.classList.toggle('wd',wide());r.dataset.theme='light';
+const V={today:()=>wide()||land()?vDesk():vToday(),ch:vCh,hist:vHist,set:vSet};let h;
+if(!S.onboarded)h=onb();else{h=(sel?`<div style="max-width:${wide()?560:9999}px">`+vDet()+'</div>':V[view]())+`<nav class="nav"><div>${[['today','Today'],['ch','Challenges'],['hist','History'],['set','Settings']].map(([k,l])=>`<button class="${!sel&&view===k?'on':''}" onclick="A.go('${k}')">${l}</button>`).join('')}</div></nav>`}
+const o0=document.querySelector('.lp'),ot=o0?o0.scrollTop:0;$a.innerHTML=h+(M?sheet(M):'');pop=null;const l0=document.querySelector('.ls');if(l0){l0.scrollLeft=LP*l0.clientWidth;l0.querySelector('.lp').scrollTop=ot}}
+const $a=document.getElementById('app');
+const A={
+go(v){view=v;sel=null;M=null;render();scrollTo(0,0)},open(id){sel=id;M=null;render();scrollTo(0,0)},back(){sel=null;render()},close(){M=null;render()},begin(){S.onboarded=true;save();render()},
+th(k){S.theme=k;save();render()},pr(){S.premium=!S.premium;save();render()},
+tg(id,d){const a=att(id),t=today();if(!a||d!==t||d<a.start||isP(a,d,t))return;const had=a.days[d];if(had)delete a.days[d];else a.days[d]=true;save();pop=id;const n=stats(a).done;if(!had&&MS[n])M=`<h2>${MS[n][0]}</h2><p>${n} of 30 days completed. ${MS[n][1]}</p><button class="btn" onclick="A.sh('${id}')">Share card</button><button class="btn out" style="margin-top:8px" onclick="A.close()">Keep going</button>`;render()},
+ps(id){const a=att(id),t=today();a.pauses.push({f:a.days[t]?add(t,1):t,t:null});save();render()},
+rs(id){const a=att(id),t=today(),p=a.pauses.find(p=>p.t===null);if(p){if(p.f>t)a.pauses.splice(a.pauses.indexOf(p),1);else p.t=t}save();render()},
+ar(id){const a=att(id);a.archived=true;a.note='Archived';save();sel=null;render()},
+rsa(id){const a=att(id);M=`<h2>Restart this challenge?</h2><p class="mu">A new attempt starts today. This one stays in History as “Restarted”.</p><button class="btn" onclick="A.rsc('${id}')">Restart</button><button class="btn out" style="margin-top:8px" onclick="A.close()">Cancel</button>`;render()},
+rsc(id){const a=att(id);a.archived=true;a.note='Restarted';M=null;A.mk(a.name,a.icon,today())},
+rep(id){const a=att(id);A.mk(a.name,a.icon,today())},
+ost(i){const c=i<0?['','✨']:CH[i];M=`<h2>${i<0?'Your own habit':c[0]}</h2>${i<0?'<input id="cn" maxlength="40" placeholder="Habit name, e.g. Stretch 10 minutes" aria-label="Habit name">':`<p class="mu">${c[2]}</p>`}<label class="mu" for="sd">Start date</label><input id="sd" type="date" value="${today()}" min="${today()}"><button class="btn" onclick="A.go2(${i})">Start challenge</button><button class="btn out" style="margin-top:8px" onclick="A.close()">Cancel</button>`;render()},
+go2(i){const d=document.getElementById('sd').value;const st=DRE.test(d)&&d>=today()?d:today();let n,ic;if(i<0){n=document.getElementById('cn').value.trim();if(!n){document.getElementById('cn').focus();return}ic='✨'}else{n=CH[i][0];ic=CH[i][1]}A.mk(n,ic,st)},
+mk(n,ic,st){const dup=S.attempts.find(a=>stats(a).live&&a.name===n&&!a.demo);if(dup){M=`<h2>Already active</h2><p class="mu">You already have “${E(n)}” running. Open it instead of starting a second copy.</p><button class="btn" onclick="A.open('${dup.id}')">Open it</button><button class="btn out" style="margin-top:8px" onclick="A.close()">Cancel</button>`;return render()}if(S.attempts.filter(a=>stats(a).live&&!a.demo).length>=3&&!S.premium){save();M=`<h2>3 active challenges</h2><p class="mu">The free plan holds 3 active challenges. Finish or archive one, or preview Premium for unlimited.</p><button class="btn" onclick="A.prem()">See Premium plans</button><button class="btn out" style="margin-top:8px" onclick="A.close()">Not now</button>`;return render()}
+const a={id:uid(),name:n,icon:ic,start:st,days:{},pauses:[],archived:false};S.attempts.push(a);save();M=null;view='today';sel=a.id;render();scrollTo(0,0)},
+sh(id){FM=1920;SH=id;A.dc()},
+async dc(){const a=att(SH),s=stats(a);M=`<h2>Share card</h2><p class="mu">Preview your card. It shows your real progress only.</p><div class="seg" style="margin-bottom:10px"><button class="btn ${FM===1920?'':'sec'}" onclick="FM=1920;A.dc()">Story</button><button class="btn ${FM===1350?'':'sec'}" onclick="FM=1350;A.dc()">Feed</button></div><p class="mu">Preparing…</p>`;render();
+try{await document.fonts.load('800 40px "Nunito Sans"')}catch(e){}
+CV=card(a,s,FM);M=`<h2>Share card</h2><div class="seg" style="margin-bottom:10px"><button class="btn ${FM===1920?'':'sec'}" onclick="FM=1920;A.dc()">Story</button><button class="btn ${FM===1350?'':'sec'}" onclick="FM=1350;A.dc()">Feed</button></div><img class="sc" alt="Share card preview" src="${CV.toDataURL('image/png')}"><button class="btn" style="margin-top:10px" onclick="A.snd()">Share</button><button class="btn sec" style="margin-top:8px" onclick="A.sv('stepstamp-card.png',CV)">Download image</button><p class="mu">If sharing or download is blocked, press and hold the image to save it.</p><button class="btn out" onclick="A.close()">Close</button>`;render()},
+snd(){CV.toBlob(async b=>{try{const f=new File([b],'stepstamp-card.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:'My Stepstamp progress'});else A.sv('stepstamp-card.png',CV)}catch(e){}})},
+sv(n,c){const go=u=>{const l=document.createElement('a');l.href=u;l.download=n;document.body.appendChild(l);l.click();l.remove()};try{if(c.toBlob)c.toBlob(b=>go(URL.createObjectURL(b)));else go(URL.createObjectURL(new Blob([c],{type:'application/json'})))}catch(e){}},
+ex(){const j=JSON.stringify({app:'stepstamp',version:1,exported:today(),attempts:S.attempts},null,1);M=`<h2>Export backup</h2><p class="mu">Copy this text and keep it safe (notes app, email to yourself), or download it as a file.</p><textarea id="ex" readonly>${E(j)}</textarea><div class="seg"><button class="btn" onclick="A.cp()">Copy</button><button class="btn sec" onclick="A.sv('stepstamp-backup.json',A.J())">Download</button></div><button class="btn out" style="margin-top:8px" onclick="A.close()">Close</button>`;render()},
+J(){return document.getElementById('ex').value},
+cp(){const t=document.getElementById('ex');t.select();try{navigator.clipboard.writeText(t.value).catch(()=>document.execCommand('copy'))}catch(e){try{document.execCommand('copy')}catch(x){}}},
+im(){PEND=null;M=`<h2>Import backup</h2><p class="mu">Paste a Stepstamp backup or choose the file. You will see a preview before anything changes.</p><input type="file" accept=".json,application/json" onchange="A.fl(this)"><textarea id="im" placeholder="Paste backup text here"></textarea><button class="btn" onclick="A.pv()">Preview</button><button class="btn out" style="margin-top:8px" onclick="A.close()">Cancel</button>`;render()},
+fl(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{document.getElementById('im').value=r.result};r.readAsText(f)},
+pv(){try{const o=JSON.parse(document.getElementById('im').value);if(!o||o.app!=='stepstamp'||!Array.isArray(o.attempts))throw 0;PEND=o.attempts.map(a=>{if(!a||typeof a.id!=='string'||typeof a.name!=='string'||!DRE.test(a.start))throw 0;const days={};Object.keys(a.days||{}).forEach(k=>{if(DRE.test(k))days[k]=true});return{id:a.id.slice(0,40),name:a.name.slice(0,60),icon:String(a.icon||'✨').slice(0,4),start:a.start,days,archived:!!a.archived,note:a.note?String(a.note).slice(0,30):undefined,pauses:(Array.isArray(a.pauses)?a.pauses:[]).filter(p=>p&&DRE.test(p.f)&&(p.t===null||DRE.test(p.t))).map(p=>({f:p.f,t:p.t}))}});
+const nw=PEND.filter(p=>!att(p.id)).length;M=`<h2>Backup preview</h2><p>This file has <b>${PEND.length}</b> attempts. You have <b>${S.attempts.length}</b> now.</p><p class="mu"><b>Merge</b> adds ${nw} new attempts and keeps everything you have. <b>Replace</b> swaps your data for the backup (a safety copy of your current data is kept on this device).</p><button class="btn" onclick="A.ap(0)">Merge</button><button class="btn sec" style="margin-top:8px" onclick="A.ap(1)">Replace</button><button class="btn out" style="margin-top:8px" onclick="A.close()">Cancel</button>`}catch(e){PEND=null;M=`<h2>Can’t import this</h2><p class="mu">This isn’t a valid Stepstamp backup. Nothing was changed.</p><button class="btn" onclick="A.im()">Try again</button>`}render()},
+ap(r){if(!PEND)return;try{localStorage.setItem(K+'.prev',JSON.stringify(S))}catch(e){}if(r)S.attempts=PEND;else PEND.forEach(p=>{if(!att(p.id))S.attempts.push(p)});PEND=null;save();M=null;view='hist';render()},
+rst(){M=`<h2>Delete all data?</h2><p class="mu">This removes every attempt from this device. Export a backup first if you may want it back.</p><button class="btn" style="background:#b3261e" onclick="A.rsy()">Delete everything</button><button class="btn out" style="margin-top:8px" onclick="A.close()">Cancel</button>`;render()},
+rsy(){S={v:1,theme:S.theme,premium:false,onboarded:true,attempts:[]};save();M=null;view='today';render()}};
+let SH=null;
+function card(a,s,h){const W=1080,c=document.createElement('canvas');c.width=W;c.height=h;const x=c.getContext('2d'),Y=v=>h===1920?v:(v-250)*.86+60,m=ms(s.done)||7,F=(w,z)=>x.font=`${w} ${z}px "Nunito Sans",system-ui,sans-serif`;
+const rr=(px,py,w,hh,r,col)=>{x.fillStyle=col;x.beginPath();x.moveTo(px+r,py);x.arcTo(px+w,py,px+w,py+hh,r);x.arcTo(px+w,py+hh,px,py+hh,r);x.arcTo(px,py+hh,px,py,r);x.arcTo(px,py,px+w,py,r);x.fill()};
+rr(0,0,W,h,0,'#18231E');const k=90/96,lx=96,ly=Y(230);
+[[0,0],[34,0],[0,34],[34,34]].forEach(p=>rr(lx+p[0]*k,ly+p[1]*k,28*k,28*k,8*k,'#2b3d33'));[[68,34],[0,68],[34,68],[68,68]].forEach(p=>rr(lx+p[0]*k,ly+p[1]*k,28*k,28*k,8*k,'#218653'));rr(lx+73*k,ly+5*k,18*k,18*k,5*k,'#F4A340');
+x.textAlign='left';x.fillStyle='#F7F8F3';F(800,52);x.fillText('Stepstamp',lx+120,ly+64);
+x.textAlign='center';x.fillStyle='#F4A340';F(800,40);let t=a.name+(s.streak?` · ${s.streak}-day streak`:'');x.fillText(t.length>34?t.slice(0,33)+'…':t,W/2,Y(450));
+x.fillStyle='#F7F8F3';F(800,400);x.fillText(String(s.done),W/2,Y(1000));x.fillStyle='#9db0a4';F(700,84);x.fillText('/ 30 days',W/2,Y(1100));
+x.fillStyle='#F7F8F3';F(800,70);x.fillText(MS[m][0],W/2,Y(1235));x.fillStyle='#9db0a4';F(400,42);x.fillText(MS[m][1],W/2,Y(1305));
+const sl=s.s;for(let i=0;i<30;i++){rr(126+(i%10)*84,Y(1380)+Math.floor(i/10)*(h===1920?80:69),66,66,14,sl[i].st==='done'?'#218653':'#2b3d33')}
+x.fillStyle='#F7F8F3';F(700,40);x.fillText('One day. One step. Your progress.',W/2,Y(1665));return c}
+const PAL=[['#F26B21','#fff'],['#8E3FB5','#fff'],['#2E9E5B','#fff'],['#2F8FE0','#fff'],['#F4B400','#26332C']];
+const ci=a=>{const i=CH.findIndex(c=>c[0]===a.name);return i>=0?i%5:[...a.id].reduce((s,c)=>s+c.charCodeAt(0),0)%5};
+const sty=a=>{const p=PAL[ci(a)];return `--hc:${p[0]};--ht:${p[1]};--p:${p[0]};--dt:${p[1]}`};
+A.hide=()=>{S.hideTip=true;save();render()};
+function vToday0(){const L=S.attempts.filter(a=>stats(a).live),t=today();
+return `<div class="row sp"><div class="row">${LOGO(40)}<h1>Stepstamp</h1></div>${S.premium?'<span class="pill">Premium preview</span>':''}</div><p class="mu">${new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}</p>`+
+(S.hideTip?'':`<div class="card"><h3>How it works</h3><p style="margin:8px 0"><b>1.</b> Start a challenge in the Challenges tab.<br><b>2.</b> Every day, tap the big circle on your card to mark today done.<br><b>3.</b> Watch the squares fill up. Share your card at 7 days.</p><button class="btn sec sm" onclick="A.hide()">Got it</button></div>`)+
+(L.length?L.map(a=>{const s=stats(a),td=s.s.find(x=>x.d===t),y=s.s.find(x=>x.d===add(t,-1)),dn=td&&td.st==='done';
+return `<div class="hc" style="${sty(a)}"><div class="row sp"><div class="row" onclick="A.open('${a.id}')" style="cursor:pointer;min-width:0"><span class="ic">${a.icon}</span><div><h3>${E(a.name)}</h3><span class="sb">${s.streak}-day streak</span></div></div>${td&&!s.paused?`<button class="chk ${dn?'on '+(pop===a.id?'pop':''):''}" aria-label="${dn?'Undo today':'Mark today done'}" onclick="A.tg('${a.id}','${t}')">✓</button>`:''}</div><div class="hm" aria-hidden="true">${s.s.map(x=>`<i class="${x.st==='done'?'d':''}"></i>`).join('')}</div><div class="row sp"><b class="nm">${s.done} of 30 days completed</b><span class="sb" onclick="A.open('${a.id}')" style="cursor:pointer">Details ›</span></div><p class="sb" style="margin:8px 0 0">${s.paused?'Take a pause. Your history stays safe.':!td?'Starts '+fmt(a.start):dn?'Nice work. You showed up today. Tap the circle to undo.':y&&y.st==='miss'?'Yesterday was missed. Your progress is still here. Tap the circle for today.':'Tap the circle to mark today done.'}</p>${s.paused?`<button class="btn sm" style="margin-top:8px;background:var(--ht);color:var(--hc)" onclick="A.rs('${a.id}')">Resume</button>`:''}</div>`}).join('')+`<button class="btn sec" onclick="A.go('ch')">+ Add another challenge</button>`:`<div class="card" style="text-align:center"><h2>Start your first step</h2><p class="mu">Pick a 30-day challenge or make your own habit.</p><button class="btn" onclick="A.go('ch')">Choose a challenge</button></div>`)}
+function charts(a){const s=stats(a),t=today(),p=PAL[ci(a)][0];let c=0;const pts=[];s.s.forEach((x,i)=>{if(x.d>t)return;if(x.st==='done')c++;pts.push([10+i*9.65,100-c*3])});
+const ln=pts.length?`<polyline fill="none" stroke="${p}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" points="${pts.map(q=>q.join(',')).join(' ')}"/>`+pts.map(q=>`<circle cx="${q[0]}" cy="${q[1]}" r="${pts.length<12?4:2}" fill="${p}"/>`).join(''):'';
+const bars=[0,1,2,3,4].map(w=>{const g=s.s.slice(w*7,w*7+7),n=g.filter(x=>x.st==='done').length,hh=n/g.length*70;return `<rect x="${20+w*55}" y="${85-hh}" width="38" height="${Math.max(hh,2)}" rx="6" fill="${p}"/><text x="${39+w*55}" y="${80-hh}" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor">${n}</text><text x="${39+w*55}" y="102" text-anchor="middle" font-size="11" fill="var(--mu)">Week ${w+1}</text>`}).join('');
+return `<div class="card"><h3>Progress over 30 days</h3><svg viewBox="0 0 300 110" style="width:100%" role="img" aria-label="Line chart of completed days"><line x1="10" y1="100" x2="300" y2="100" stroke="var(--bd)" stroke-width="2"/><line x1="10" y1="55" x2="300" y2="55" stroke="var(--bd)" stroke-dasharray="4"/>${ln}</svg><p class="mu" style="margin:0">The line rises with every completed day. Top is 30.</p></div><div class="card"><h3>Completed days per week</h3><svg viewBox="0 0 300 110" style="width:100%" role="img" aria-label="Bar chart of completed days per week">${bars}</svg></div>`}
+function vDet(){const a=att(sel);if(!a){sel=null;return vToday()}const p=sty(a);return vDet0().replace('<div class="card"><div class="big">',`<div class="card hcd" style="${p}"><div class="big">`).replace('<div class="card"><div class="grid">',`<div class="card" style="${p}"><div class="grid">`)+charts(a)}
+function vToday(){let h=vToday0();const C=S.attempts.filter(a=>!a.archived&&stats(a).complete);
+if(C.length)h+=`<h3 style="margin-top:22px">Completed 🏆</h3>`+C.map(a=>`<div class="card row sp" onclick="A.open('${a.id}')" style="cursor:pointer"><div class="row"><span style="font-size:26px">${a.icon}</span><div><h3>${E(a.name)}</h3><span class="mu">30 of 30 days completed</span></div></div><span class="pill">View</span></div>`).join('');
+return h}
+A.prem=()=>{const f=t=>`<div class="row" style="margin:6px 0"><b style="color:var(--pt)">✓</b><span>${t}</span></div>`,o=(t,p,d,b)=>`<div class="card" style="margin:10px 0;${b==='Best value'?'border:2px solid var(--p)':''}"><div class="row sp"><b>${t} <span class="pill">${b}</span></b><b>${p}</b></div><span class="mu">${d}</span></div>`;
+M=`<h2>Stepstamp Premium</h2><p class="mu">Cheap, fair and ad-free.</p>${f('Unlimited active habits')}${f('All challenge packs')}${f('Full statistics (coming soon)')}${f('Extra themes (coming soon)')}${f('Automatic backup (coming soon)')}
+${o('Monthly','$0.99 · ₹49','First month half price. From month 4 it drops to $0.79 · ₹39.','Launch offer')}${o('Yearly','$9.99 · ₹199','Just $0.83 · ₹17 a month.','Best value')}${o('Lifetime','₹499','Pay once, keep it forever.','Limited time')}
+<p>🎁 <b>7 days free</b> on Monthly and Yearly. Cancel any time.</p><p>🎆 New Year sale around 1 January: an even lower price.</p><p class="mu">These offers are planned. Payments are not connected yet. The preview unlocks everything on this device only.</p><button class="btn" onclick="A.pr();A.prem()">${S.premium?'Turn off preview':'Start Premium preview'}</button><button class="btn out" style="margin-top:8px" onclick="A.close()">Close</button>`;render()};
+A.demo=()=>{S.attempts=S.attempts.filter(a=>!a.demo);const t=today(),mkd=(n,ic,off,skip)=>{const days={};for(let i=0;i<=off;i++){if(!skip.includes(i))days[add(t,-off+i)]=true}return{id:uid(),name:n,icon:ic,start:add(t,-off),days,pauses:[],archived:false,demo:true}};
+const f=mkd('Daily water','💧',29,[]);S.attempts.push(mkd('Reading','📖',20,[3,4,9,13,14,18,20]),mkd('Early rising','🌅',9,[2,6,9]),f);S.hideTip=true;save();view='today';sel=f.id;M=null;render();scrollTo(0,0)};
+A.undemo=()=>{S.attempts=S.attempts.filter(a=>!a.demo);sel=null;save();render()};
+const land=()=>innerHeight<=520&&innerWidth>=560&&innerWidth>innerHeight,wide=()=>innerWidth>=900&&!land(),md=()=>land()?'l':wide()?'w':'p',WK=['#CFE8EE','#FBD9C9','#E6D3EE','#D9E8C8','#F9E8A8'];
+let LP=0;const cc=p=>p>=80?'#bfe3c9':p>=50?'#f7e6a4':'#f5cfc2';
+function vDesk(){const L=land(),now=new Date(),y=now.getFullYear(),mo=now.getMonth(),n=new Date(y,mo+1,0).getDate(),t=today(),dl=now.getDate(),ds=i=>ymd(new Date(y,mo,i+1)),MN=now.toLocaleDateString(undefined,{month:'long'}),col=a=>PAL[ci(a)];
+const R=S.attempts.filter(a=>!a.archived).map(a=>{const s=stats(a);return{a,s,set:new Set(s.s.map(x=>x.d))}});
+if(!R.length)return `<div class="dk"><h1>Habit tracker</h1><div class="card" style="text-align:center"><h2>Nothing to track yet</h2><p class="mu">Start a challenge to fill this tracker.</p><div class="seg" style="max-width:420px;margin:auto"><button class="btn" onclick="A.go('ch')">Choose a challenge</button></div></div></div>`;
+let D=0,P=0;const per=[],dd=[],wk=[0,0,0,0,0].map(()=>Array(7).fill(0));
+for(let i=0;i<n;i++){const d=ds(i);let p=0,dn=0;R.forEach(r=>{if(r.set.has(d)&&d<=t){p++;if(r.a.days[d])dn++}});D+=dn;P+=p;per.push(d<=t&&p?dn/p*100:null);wk[Math.floor(i/7)][i%7]=dn}
+const pct=P?Math.round(D/P*100):0,pts=per.map((v,i)=>v===null?null:[10+i*(580/(n-1)),110-v]).filter(Boolean),line=pts.map(q=>q.join(',')).join(' ');
+const area=pts.length>1?`<polygon points="${pts[0][0]},110 ${line} ${pts[pts.length-1][0]},110" fill="var(--p)" opacity=".18"/><polyline vector-effect="non-scaling-stroke" points="${line}" fill="none" stroke="var(--p)" stroke-width="3" stroke-linejoin="round"/>`:'';
+const ch=b=>`<svg viewBox="0 0 600 120" preserveAspectRatio="none" style="width:100%;height:${b?'100%':'110px'}" role="img" aria-label="Daily progress area chart"><line x1="10" y1="110" x2="590" y2="110" stroke="var(--bd)" stroke-width="2"/><line x1="10" y1="60" x2="590" y2="60" stroke="var(--bd)" stroke-dasharray="4"/>${area}</svg>`;
+const C=251.3,mx=Math.max(1,...wk.flat());
+const ring=z=>`<div><b>Progress</b><svg viewBox="0 0 100 100" style="width:${z}px;display:block;margin:auto" role="img" aria-label="${pct} percent complete"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--tint)" stroke-width="12"/><circle cx="50" cy="50" r="40" fill="none" stroke="var(--p)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${pct/100*C} ${C}" transform="rotate(-90 50 50)"/><text x="50" y="56" text-anchor="middle" font-size="20" font-weight="800" fill="currentColor">${pct}%</text></svg><div class="mu">${D} of ${P} days done</div></div>`;
+const Q=R.map(r=>ms2(r,n,y,mo)),TT=Q.reduce((s,q)=>s+q[0],0),GG=Q.reduce((s,q)=>s+q[1],0),OP=GG?Math.round(TT/GG*100):0,pf=per.filter(v=>v===100).length;
+const cs=p=>p>=80?'#8fd1a8':p>=50?'#f3d56b':'#f1a994',dq=(v,p)=>`<div class="dq"${p===undefined?'':` style="background:linear-gradient(90deg,${cs(p)} ${p}%,#e9efe8 ${p}%);color:#26332C"`}>${v}</div>`;
+const hd=`<div class="dr hd2"><div style="grid-area:1/1/3/2"></div>${Array.from({length:n},(_,i)=>`<div class="dw ${ds(i)===t?'tdh':''}" style="grid-area:1/${i+2}">${'SMTWTFS'[new Date(y,mo,i+1).getDay()]}</div>`).join('')}${Array.from({length:n},(_,i)=>`<div class="dn ${ds(i)===t?'tdh':''}" style="grid-area:2/${i+2}">${i+1}</div>`).join('')}${['TOTAL','GOAL','DONE'].map((h,k)=>`<div class="vh" style="grid-area:1/${n+2+k}/3/${n+3+k}">${h}</div>`).join('')}</div>`;
+const rows=R.map((r,k)=>{const q=Q[k],c=col(r.a);return `<div class="dr" style="--hc:${c[0]};--ht:${c[1]}"><div class="dl" title="${E(r.a.name)}"><i class="ib">${r.a.icon}</i><span>${E(r.a.name)}</span></div>${Array.from({length:n},(_,i)=>{const d=ds(i),ok=r.set.has(d)&&d<=t,dn=r.a.days[d];return ok?`<button class="dc ${dn?'on':''} ${d===t?'td':''}" ${d===t?'':'disabled'} aria-pressed="${!!dn}" aria-label="${E(r.a.name)}, ${fmt(d)}, ${dn?'done':'not done'}" onclick="A.tg('${r.a.id}','${d}')">${dn?'✓':''}</button>`:`<span class="dc off ${d===t?'td':''}"></span>`}).join('')}${dq(q[0])}${dq(q[1])}${dq(q[2]+'%',q[2])}</div>`}).join('');
+const em=`<div class="dr"><div class="dl" style="--hc:var(--ac)"><i class="ib">📊</i><span>Day score</span></div>${per.map(v=>`<span class="em" title="${v===null?'':Math.round(v)+'%'}">${v===null?'':v>=80?'😄':v>=50?'🙂':v>0?'😐':'😕'}</span>`).join('')}${dq(TT)}${dq(GG)}${dq(OP+'%',OP)}</div>`;
+const fs=Math.max(13,Math.min(28,Math.floor((90+34*(R.length+1))/(MN.length*1.1))));
+const tbl=`<div class="card dscroll" style="${L?'margin:0':''}"><div class="row" style="align-items:stretch;gap:8px"><div class="spine"${L?'':` style="font-size:${fs}px;letter-spacing:.1em"`}>${MN.toUpperCase()}</div><div class="dt" style="flex:1;--n:${n}">${hd}${rows}${em}</div></div>${L?'':'<p class="mu" style="margin:8px 0 0;font-size:13px">🔒 Only today can be ticked. Past and future days stay locked.</p>'}</div>`;
+const mcard=w=>`<div class="card mc" style="${w?'width:230px;':''}margin:0"><div class="mn">${MN}</div><div class="my">${y}</div><div class="ms"><div><b>${dl}</b><span>${now.toLocaleDateString(undefined,{weekday:'short'})} today</span></div><div><b>${n-dl}</b><span>days left</span></div><div><b>${TT}</b><span>done</span></div></div></div>`;
+const wkH=`<div class="card"><b>Weekly activity</b><svg viewBox="0 0 330 96" style="width:100%;margin-top:6px" role="img" aria-label="Ticks per day, grouped by week">${wk.map((w,k)=>w.map((v,i)=>{if(k*7+i>=n)return'';const h=v/mx*60;return `<rect x="${k*66+i*9}" y="${72-h}" width="7" height="${Math.max(h,3)}" rx="2" fill="${v?'var(--p)':'var(--tint)'}"/>`}).join('')+`<text x="${k*66+31}" y="90" text-anchor="middle" font-size="10" fill="currentColor">Week ${k+1}</text>`).join('')}</svg></div>`;
+const progH=`<div class="card ph"><b>Progress by habit</b>${R.map(r=>`<div style="margin-top:8px;--p:${col(r.a)[0]}"><div class="row sp"><span>${r.a.icon} ${E(r.a.name)}</span><b>${r.s.done}/30</b></div>${strip(r.a)}</div>`).join('')}</div>`;
+const strkH=`<div class="card"><b>Current streaks</b>${[...R].sort((a,b)=>b.s.streak-a.s.streak).map(r=>`<div style="margin-top:8px"><div class="row sp"><span>${r.a.icon} ${E(r.a.name)}</span><b>🔥 ${r.s.streak}</b></div><div class="bar" style="margin-top:4px"><i style="width:${Math.min(100,r.s.streak/30*100)}%;background:${col(r.a)[0]}"></i></div></div>`).join('')}<p class="mu" style="margin:8px 0 0;font-size:12px">A missed day never erases progress.</p></div>`;
+const glH=`<div class="card"><b>${MN} at a glance</b><div class="gl">${[['Perfect days',pf],['Overall',OP+'%'],['Done',TT],['Goal',GG],['Habits',R.length],['Finished',R.filter(r=>r.s.complete).length]].map(q=>`<div><b>${q[1]}</b><span>${q[0]}</span></div>`).join('')}</div></div>`;
+if(L)return `<div class="dk"><div class="ls" onscroll="A.sc(this)"><section class="lp">${tbl}</section><section class="lp"><div class="row" style="align-items:stretch;height:100%;gap:12px"><div class="card" style="flex:1;margin:0;display:flex;flex-direction:column;padding:12px"><b>Daily progress · ${MN}</b><div class="cw">${ch(1)}<span class="ya" style="top:8.3%">100%</span><span class="ya" style="top:50%">50%</span><span class="ya" style="top:91.7%">0%</span></div><div class="row sp mu" style="margin:6px 0 0 38px;font-size:11px"><span>Day 1</span><span>Day ${n}</span></div></div><div class="card" style="width:220px;margin:0;display:grid;place-items:center;text-align:center">${ring(150)}</div></div></section><section class="lp"><div class="dkx" style="margin:0">${progH}${strkH}${glH}</div></section><section class="lp"><div class="row" style="align-items:stretch;gap:12px">${mcard(1)}<div style="flex:1;min-width:0">${wkH.replace('class="card"','class="card" style="margin:0"')}</div></div></section></div><div class="pd">${[0,1,2,3].map(i=>`<button class="${LP===i?'on':''}" aria-label="Page ${i+1}" onclick="A.pg(${i})"><i></i></button>`).join('')}</div></div>`;
+return `<div class="dk"><div class="row sp" style="margin-bottom:8px"><div class="row">${LOGO(36)}<h1 style="font-size:22px">Habit tracker</h1></div><button class="btn sm" style="min-height:44px" onclick="A.go('ch')">+ Add challenge</button></div><div class="top">${mcard(0)}<div class="card"><b>Daily progress</b>${ch(0)}</div><div class="card" style="text-align:center">${ring(110)}</div></div>${tbl}<div class="dkb">${wkH}${progH}${strkH}${glH}</div></div>`}
+A.sc=e=>{if(!matchMedia('(prefers-reduced-motion:reduce)').matches){const q=e.scrollLeft/e.clientWidth;[...e.children].forEach((c,i)=>{const d=Math.min(1,Math.abs(q-i));c.style.opacity=1-d*.7;c.style.transform=`scale(${1-d*.06})`})}const p=Math.round(e.scrollLeft/e.clientWidth);if(p!==LP){LP=p;document.querySelectorAll('.pd button').forEach((b,i)=>b.classList.toggle('on',i===p))}};
+A.rot=async()=>{try{await document.documentElement.requestFullscreen();await screen.orientation.lock('landscape')}catch(e){M=`<h2>Turn your phone sideways</h2><p class="mu">This browser can’t lock the screen. Rotate your phone yourself, or install the app: browser menu, then Add to Home screen.</p><button class="btn" onclick="A.close()">OK</button>`;render()}};
+A.pg=i=>{const l=document.querySelector('.ls');if(l)l.scrollTo({left:i*l.clientWidth,behavior:'smooth'})};
+const ms2=(r,n,y,mo)=>{let tt=0,g=0;for(let i=0;i<n;i++){const d=ymd(new Date(y,mo,i+1));if(r.set.has(d)){g++;if(r.a.days[d])tt++}}return[tt,g,g?Math.round(tt/g*100):0]};
+let WW=md();addEventListener('resize',()=>{if(md()!==WW){WW=md();render()}});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!M)render()});
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+render();
+</script></body></html>
